@@ -35,6 +35,9 @@ Flag - vecna
 I could see the flag in plain view already and just increased contrast in my default image editing app to make it more visible.
 Flag - CTF{Well that data was well hidden.}
 
+### Hidden
+Opened the Hex editor and found the flag right at the bottom.
+
 ## Cipher Challenge
 ### Layers
 I first did a base64 decoding
@@ -327,3 +330,5 @@ Ran strings on the file and didn't see anything.
 Noticed the ton of images that were not displayed and went through each of them.
 Found it in image 23.
 Flag - CTF{unz1p_3v3ryth1ng}
+### The Mountain
+Opened the hex editor and found the CTF right at the start
