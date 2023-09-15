@@ -43,7 +43,14 @@ and I then did a ROT47 Caesar Cipher
 Flag - StrangerThings
 
 ## Network Challenge
+### Camouflage
 I opened the network dump in Wireshark then noticed that it was transferring html. I decided to export all the files sent.
 After opening them 1 by 1, I noticed a main.html which contained the username and password. 
 The password was URI encoded which I decoded and Base64 decoded as well.
 Flag - KN1Z6PXVy9
+
+## Network Challenge
+### Just Keep Typing
+I originally opened my capture in Wireshark when I noticed the only values that changed were the IDs and the Leftover Capture Data. I figured since it was USB protocol, I should look up how to decipher it. I found a helpful tutorial from https://blog.stayontarget.org/2019/03/decoding-mixed-case-usb-keystrokes-from.html which included a script to map the leftover capture data to keypresses. I then exported the data into a csv and separated out all the Leftover Capture data as a TXT and ran the script. 
+Flag - flag{pr355_0nwards_3a10134e}
+
