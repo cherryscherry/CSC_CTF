@@ -1,0 +1,18 @@
+09/15/23 14:21:59, 
+09/15/23 14:21:59, ****************************
+09/15/23 14:21:59, Starting factorization of 21740962110328230832239032656649610932068604557
+09/15/23 14:21:59, using pretesting plan: normal
+09/15/23 14:21:59, no tune info: using qs/gnfs crossover of 95 digits
+09/15/23 14:21:59, no tune info: using qs/snfs crossover of 95 digits
+09/15/23 14:21:59, ****************************
+09/15/23 14:21:59, rho: x^2 + 3, starting 1000 iterations on C47
+09/15/23 14:21:59, rho: x^2 + 2, starting 1000 iterations on C47
+09/15/23 14:21:59, rho: x^2 + 1, starting 1000 iterations on C47
+09/15/23 14:21:59, pm1: starting B1 = 150K, B2 = gmp-ecm default on C47
+09/15/23 14:21:59, prp12 = 226219232053
+09/15/23 14:21:59, final ECM pretested depth: 0.000000
+09/15/23 14:21:59, scheduler: switching to sieve method
+09/15/23 14:21:59, starting SIQS on c35: 96105719717210549486910438869509369
+09/15/23 14:21:59, random seed: 14607397884368661202
+09/15/23 14:21:59, prp35 = 96105719717210549486910438869509369
+09/15/23 14:21:59, Total factoring time = 0.2954 seconds

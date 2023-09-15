@@ -42,6 +42,35 @@ Result - $EC2?86C%9:?8D
 and I then did a ROT47 Caesar Cipher
 Flag - StrangerThings
 
+### Factory
+Downloaded Yafu and ran the following command
+`.\yafu-x64-gc.exe "factor(21740962110328230832239032656649610932068604557)"`
+result ```
+```
+fac: factoring 21740962110328230832239032656649610932068604557
+fac: using pretesting plan: normal
+fac: no tune info: using qs/gnfs crossover of 95 digits
+fac: no tune info: using qs/snfs crossover of 95 digits
+div: primes less than 10000
+fmt: 1000000 iterations
+rho: x^2 + 3, starting 1000 iterations on C47
+rho: x^2 + 2, starting 1000 iterations on C47
+rho: x^2 + 1, starting 1000 iterations on C47
+pm1: starting B1 = 150K, B2 = gmp-ecm default on C47
+
+starting SIQS on c35: 96105719717210549486910438869509369
+Total factoring time = 0.2954 seconds
+
+
+***factors found***
+
+P12 = 226219232053
+P35 = 96105719717210549486910438869509369
+
+ans = 1
+```
+Flag - CTF{226219232053_96105719717210549486910438869509369}
+
 ## Network Capture Challenge
 ### Camouflage
 I opened the network dump in Wireshark then noticed that it was transferring html. I decided to export all the files sent.
@@ -106,10 +135,67 @@ The Python code then uses the knowledge of this structure to extract the relevan
 
 The extraction is done without needing to individually test each flag because the goal was to present the byte as a hex value (0xXXX format). If one needed the status of individual flags, they could use bitwise operations to test each flag, as demonstrated in the earlier solution.
 
+## Identify The Attack
+```
+hex_dump = "0adc27b619b40af933fabd4908004500002836e300002506fc4bac1e0042341e8223b3348011bd4b0250000000005029040056380000"
+
+def extract_tcp_flags(hex_dump):
+    # Convert the hex dump to bytes
+    data = bytes.fromhex(hex_dump)
+
+    # Extract TCP flags from the TCP header
+    tcp_header_start = 14 + 20  # Ethernet header + IP header
+    tcp_flags_byte = data[tcp_header_start + 13]
+
+    # Define flags
+    flags = {
+        'URG': (tcp_flags_byte & 0b00100000) != 0,
+        'ACK': (tcp_flags_byte & 0b00010000) != 0,
+        'PSH': (tcp_flags_byte & 0b00001000) != 0,
+        'RST': (tcp_flags_byte & 0b00000100) != 0,
+        'SYN': (tcp_flags_byte & 0b00000010) != 0,
+        'FIN': (tcp_flags_byte & 0b00000001) != 0
+    }
+    return flags
+
+flags = extract_tcp_flags(hex_dump)
+print(flags)
+```
+
+Result `{'URG': True, 'ACK': False, 'PSH': True, 'RST': False, 'SYN': False, 'FIN': True}`
+The **Xmas scan** or **Xmas tree scan** is a type of TCP port scan used to identify listening ports on the target system. The name "Xmas" comes from the fact that the flags light up the packet like a Christmas tree.
+
+**How does the Xmas scan work?**
+
+The attacker sends a TCP frame with the URG, PSH, and FIN flags set to the target machine. According to the TCP RFC, if the port is closed, the target should respond with an RST packet, indicating the port is closed. If there's no response from the target, the port can be inferred as open or filtered.
+
+**Why is this technique used?**
+
+1. **Stealth**: Traditional scans can be easily detected. However, the Xmas scan, by using a non-standard combination of flags, can sometimes evade basic detection techniques or confuse intrusion detection systems (IDS).
+    
+2. **Efficiency**: The Xmas scan is stateless from the attacker's perspective. They don't need to keep track of the connection state, making it faster and consuming less memory on the attacker's side.
+    
+
+**So why is the combination URG, PSH, and FIN indicative of an Xmas scan?**
+
+The TCP protocol specification (RFC 793) does not define any specific action for packets with this unusual combination of flags. So, by the book, if a service receives a packet with these flags set and the port is closed, it should send an RST packet in response. If the port is open, typically, there's no response at all.
+
+It's the non-standard nature of this flag combination that makes it interesting for attackers. Most standard communication doesn't involve packets with just the URG, PSH, and FIN flags set, so seeing this combination can be a strong hint of an Xmas scan in progress.
+
 ## OSINT
 ### Beautiful House
-I dropped the image into Google Lens. Then searched by the keywords shown on the image "The Rectory". I went to each result one by one and visited their google maps street view. I eventually got to The Rectory Simons Town and the Tripadvisor had the name of the architect. I went to his Wikipedia page and found the name of his cousin whom he married.
+I dropped the image into Google Lens. Then searched by the keywords shown on the image "The Rectory". I went to each result one by one and visited their google maps street view. I eventually got to The Rectory Simons Town and the TripAdvisor had the name of the architect. I went to his Wikipedia page and found the name of his cousin whom he married.
 Flag - Florence Edmeades
 
+### Heritage
+Unscramble the message
+```
+hex_message = "534148524120392f322f3030332f30303139"
+ascii_message = bytes.fromhex(hex_message).decode('utf-8')
 
+print(ascii_message)
+```
 
+Result `SAHRA 9/2/003/0019`
+
+A quick google search revealed that the full Site Name is Old Military Hospital, Rhodes University, Grahamstown. I found this on https://sahris.sahra.org.za/sites/920030019 which also contained a downloadable PDF Which contained the current department of the building.

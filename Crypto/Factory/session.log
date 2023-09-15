@@ -1,0 +1,29 @@
+09/15/23 14:19:51, =====================================
+09/15/23 14:19:51, System/Build Info: 
+09/15/23 14:19:51, YAFU Version 2.11
+09/15/23 14:19:51, Built with Microsoft Visual Studio 1934 and Intel Compiler 2021
+09/15/23 14:19:51, Using GMP-ECM 7.0.6-dev, Powered by MPIR 3.0.0
+09/15/23 14:19:51, detected AMD Ryzen 5 PRO 4650G with Radeon Graphics
+detected L1 = 32768 bytes, L2 = 8388608 bytes, CL = 64 bytes
+09/15/23 14:19:51, CPU features enabled: 09/15/23 14:19:51, SSE41 09/15/23 14:19:51, 
+09/15/23 14:19:51, using 1 random witness for Rabin-Miller PRP checks
+09/15/23 14:19:51, Cached 664579 primes: max prime is 9999991
+09/15/23 14:19:51, Could not parse yafu.ini from C:\Users\User\OneDrive - University of Pretoria\University\Year 3\Semester 2\COS330\CTF\Crypto\Factory
+
+09/15/23 14:19:51, Random seed: 17908538668306775344
+09/15/23 14:20:15, Processing: info.txt
+09/15/23 14:20:15, Result    : 0
+09/15/23 14:20:47, Processing: yafu "factor(21740962110328230832239032656649610932068604557)"
+09/15/23 14:20:47, Result    : 0
+09/15/23 14:21:59, =====================================
+09/15/23 14:21:59, System/Build Info: 
+09/15/23 14:21:59, detected AMD Ryzen 5 PRO 4650G with Radeon Graphics
+detected L1 = 32768 bytes, L2 = 8388608 bytes, CL = 64 bytes
+09/15/23 14:21:59, CPU features enabled: 09/15/23 14:21:59, SSE41 09/15/23 14:21:59, 
+09/15/23 14:21:59, using 1 random witness for Rabin-Miller PRP checks
+09/15/23 14:21:59, Cached 664579 primes: max prime is 9999991
+09/15/23 14:21:59, Could not parse yafu.ini from C:\Users\User\OneDrive - University of Pretoria\University\Year 3\Semester 2\COS330\CTF\Crypto\Factory
+
+09/15/23 14:21:59, Random seed: 18137811254892506272
+09/15/23 14:21:59, Processing: factor(21740962110328230832239032656649610932068604557)
+09/15/23 14:21:59, Result    : 1
