@@ -71,6 +71,43 @@ ans = 1
 ```
 Flag - CTF{226219232053_96105719717210549486910438869509369}
 
+### Exclusive OR Nothing
+Reversed the program logic
+```
+def decode_flag():
+
+    with open("flag.enc", "r") as infile:
+
+        flag_enc = infile.read()
+
+        flag_dec = ""
+
+  
+
+        for each in flag_enc:
+
+            flag_dec += chr(ord(each) ^ 0x66)
+
+  
+
+    with open("decoded_flag.txt", "w") as outfile:
+
+        outfile.write(flag_dec)
+
+  
+
+    print("Decoded flag saved to decoded_flag.txt")
+
+  
+  
+
+if __name__ == "__main__":
+
+    decode_flag()
+```
+Result in file
+`CTF{Nothing fancy, just XOR.}`
+
 ## Network Capture Challenge
 ### Camouflage
 I opened the network dump in Wireshark then noticed that it was transferring html. I decided to export all the files sent.
