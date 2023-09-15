@@ -54,3 +54,8 @@ Flag - KN1Z6PXVy9
 I originally opened my capture in Wireshark when I noticed the only values that changed were the IDs and the Leftover Capture Data. I figured since it was USB protocol, I should look up how to decipher it. I found a helpful tutorial from https://blog.stayontarget.org/2019/03/decoding-mixed-case-usb-keystrokes-from.html which included a script to map the leftover capture data to keypresses. I then exported the data into a csv and separated out all the Leftover Capture data as a TXT and ran the script. 
 Flag - flag{pr355_0nwards_3a10134e}
 
+## OSINT
+### Beautiful House
+I dropped the image into Google Lens. Then searched by the keywords shown on the image "The Rectory". I went to each result one by one and visited their google maps street view. I eventually got to The Rectory Simons Town and the Tripadvisor had the name of the architect. I went to his Wikipedia page and found the name of his cousin whom he married.
+Flag - Florence Edmeades
+
