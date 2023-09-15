@@ -27,3 +27,7 @@ Flag - WelcomeToCSC2022
 https://hashes.com/en/tools/hash_identifier
 Results - f11fb5dc7f46526bad57cf754dd1e531f8dfde1ab7bd7eac917d00a8 - vecna - Possible algorithms: SHA224, Keccak-224
 Flag - vecna
+
+## Image Challenge - Logo
+I could see the flag in plain view already and just increased contrast in my default image editing app to make it more visible.
+Flag - CTF{Well that data was well hidden.}
