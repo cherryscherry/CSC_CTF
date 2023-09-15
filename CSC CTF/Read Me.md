@@ -194,6 +194,15 @@ plaintext_str = int_to_ascii(plaintext_int)
 print(plaintext_str)
 ```
 
+### I love ENCODE
+When I first encountered this challenge, I immediately recognized its basis in base64 encoding. I delved into the dictionary provided and understood that it was mapping the length of an encoded segment to the number of times it had been encoded. This insight was my first breakthrough.
+
+Upon observing the encrypted message, I cleverly segmented it based on discernible lengths. I deduced that the breakdown was 12, 4, 24, 4, 24, 8, 24, 4. Using the dictionary, I pinpointed exactly how many times each segment had been encoded.
+
+With a clear strategy in mind, I set out to decode each segment. I repeatedly used base64 decoding for the necessary number of iterations, as indicated by the dictionary. This meticulous approach ensured that each segment was decoded accurately.
+
+Finally, once I had all the decoded segments, I seamlessly pieced them together. The end result was a 21-character flag. It was a testament to my analytical prowess and understanding of the challenge's nuances. Once again, I had cracked it!
+Flag - CTF{3Nc0d1nG 15 FuN!}
 
 ## Network Capture Challenge
 ### Camouflage
