@@ -107,6 +107,90 @@ if __name__ == "__main__":
 ```
 Result in file
 `CTF{Nothing fancy, just XOR.}`
+### RSA
+The given values suggest that you're looking at an RSA encryption with the values `n`, `e`, and `c` provided. The common value of `e` is `3`, which is frequently chosen for its efficiency.
+
+Here's a step-by-step guide, followed by a Python script to attempt the decryption:
+
+1. **Small `e` Attack**: If the plaintext `m` raised to `e` is smaller than `n`, then simply taking the `e`-th root of `c` will recover the plaintext.
+
+2. **Wiener's Attack**: If the secret `d` is small compared to `n`, Wiener's Attack can be used.
+
+3. **Common Modulus Attack**: This isn't relevant here because it requires two ciphertexts encrypted with the same modulus but different `e`.
+
+4. **Fermat's Factoring**: If `n` is a product of two primes close to each other, this attack can be used. The difference between the primes should be small.
+
+Here's a Python script that attempts multiple decryption methods, focusing on the small `e` attack and the Fermat's factorization method:
+
+```python
+import gmpy2
+
+def small_e_attack(c, e, n):
+    # Computes the eth root of c. If it's an integer, we have our message.
+    m, exact = gmpy2.iroot(c, e)
+    if exact:
+        return int(m)
+    else:
+        return None
+
+def fermat_factorization(n):
+    # Simple implementation of Fermat's factorization method.
+    a = gmpy2.isqrt(n)
+    b2 = gmpy2.sub(gmpy2.square(a), n)
+    while not gmpy2.is_square(b2):
+        a = gmpy2.add(a, 1)
+        b2 = gmpy2.sub(gmpy2.square(a), n)
+    b = gmpy2.isqrt(b2)
+    p = gmpy2.sub(a, b)
+    q = gmpy2.add(a, b)
+    return int(p), int(q)
+
+def decrypt_rsa(c, e, n):
+    # Attempt small e attack
+    m = small_e_attack(c, e, n)
+    if m:
+        return m
+
+    # Attempt Fermat's factorization
+    p, q = fermat_factorization(n)
+    phi_n = (p - 1) * (q - 1)
+    d = gmpy2.invert(e, phi_n)
+    m = gmpy2.powmod(c, d, n)
+    return int(m)
+
+n = 21240130069302595435883573568292543584653982426668643904196630885984119007899960150162877143271928662185885422702123670222165981446412189843665571992895649937195036232374014356896167929469467494531756153911013832353810970941919101050971790197002016280790620714887304192321101311465703150098410331176735899796484284165771555960758054286754565310439163189954842301676099617954811528874343372426916478057819577132937062857039063351856289801979923260408285890418889829381378968646646737194160697920287161229178345666260994127087040393511692642122516019055570881253021165130706539874713965212158253699181636631222365809257
+
+e = 3
+
+c = 80505397907128518326368510654343095894448384569115420624567650731853204381479599216226376345254941090872832963619259274943986478887206647256170253591735005504
+
+print(decrypt_rsa(c, e, n))
+```
+The output `43179240623702191395333619723226987496534664842669684` is the result of the decryption attempt using the provided methods in the script. This number represents the plaintext message `m` in integer form.
+
+To extract meaningful information from this value, you may need additional context:
+
+1. **Encoding Scheme**: If a specific encoding scheme was used (e.g., ASCII values or another known encoding), you can convert the number back to its original format.
+2. **Instructions from the Challenge**: Capture the flag challenges might provide hints on how the original plaintext is formatted.
+
+If the plaintext was originally a string and was encoded as a sequence of ASCII values, you would convert it back to a string. For the sake of completeness, here's a method to attempt that conversion:
+
+```python
+def int_to_ascii(value):
+    ascii_representation = []
+    while value:
+        ascii_value = value & 0xFF  # Extract the least significant byte
+        ascii_representation.append(chr(ascii_value))
+        value >>= 8  # Right-shift by 8 bits (1 byte)
+
+    # Convert list of chars to a string, but reverse it since we started from the least significant byte
+    return ''.join(ascii_representation[::-1])
+
+plaintext_int = 43179240623702191395333619723226987496534664842669684
+plaintext_str = int_to_ascii(plaintext_int)
+print(plaintext_str)
+```
+
 
 ## Network Capture Challenge
 ### Camouflage
@@ -236,3 +320,10 @@ print(ascii_message)
 Result `SAHRA 9/2/003/0019`
 
 A quick google search revealed that the full Site Name is Old Military Hospital, Rhodes University, Grahamstown. I found this on https://sahris.sahra.org.za/sites/920030019 which also contained a downloadable PDF Which contained the current department of the building.
+## Forensics
+### One File
+Extracted the docx file.
+Ran strings on the file and didn't see anything.
+Noticed the ton of images that were not displayed and went through each of them.
+Found it in image 23.
+Flag - CTF{unz1p_3v3ryth1ng}
