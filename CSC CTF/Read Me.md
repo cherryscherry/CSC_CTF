@@ -42,20 +42,74 @@ Result - $EC2?86C%9:?8D
 and I then did a ROT47 Caesar Cipher
 Flag - StrangerThings
 
-## Network Challenge
+## Network Capture Challenge
 ### Camouflage
 I opened the network dump in Wireshark then noticed that it was transferring html. I decided to export all the files sent.
 After opening them 1 by 1, I noticed a main.html which contained the username and password. 
 The password was URI encoded which I decoded and Base64 decoded as well.
 Flag - KN1Z6PXVy9
 
-## Network Challenge
+## Network Data Challenge
 ### Just Keep Typing
 I originally opened my capture in Wireshark when I noticed the only values that changed were the IDs and the Leftover Capture Data. I figured since it was USB protocol, I should look up how to decipher it. I found a helpful tutorial from https://blog.stayontarget.org/2019/03/decoding-mixed-case-usb-keystrokes-from.html which included a script to map the leftover capture data to keypresses. I then exported the data into a csv and separated out all the Leftover Capture data as a TXT and ran the script. 
 Flag - flag{pr355_0nwards_3a10134e}
+
+### Find The Flag
+#### **Understanding the Packet Structure**:
+
+#### Ethernet Header:
+- Every Ethernet frame starts with a 14-byte header. This includes the source and destination MAC addresses and the EtherType field.
+
+#### IP Header:
+- After the Ethernet header, you will find the IP header. Assuming it doesn't have any options, this header is 20 bytes long.
+
+#### TCP Header:
+- The TCP header starts after the IP header. Within the TCP header:
+  - The 13th byte contains the higher-order bits of the TCP flags.
+  - The following (or 14th byte's starting bits) could contain the lower-order bits, but commonly used TCP flags are confined within the 13th byte.
+
+### 2. **Python Implementation**:
+
+#### Convert Hex Dump to Bytes:
+```python
+data = bytes.fromhex(hex_dump)
+```
+The `fromhex()` method of the `bytes` class takes a hexadecimal string and converts it into a bytes object. The `data` variable now holds the binary representation of the hex dump.
+
+#### Locating the TCP Flags:
+```python
+tcp_header_start = 14 + 20  # Ethernet header + IP header
+tcp_flags_byte = data[tcp_header_start + 13]
+```
+- `tcp_header_start` calculates where the TCP header starts. As mentioned, the Ethernet header is 14 bytes, and the IP header is 20 bytes. So the TCP header starts 34 bytes into the packet.
+  
+- By adding 13 to this starting position, we index into the byte that contains the TCP flags.
+
+#### Extracting and Formatting Flags:
+```python
+return tcp_flags_byte
+```
+After extracting the flags, the function returns them. The byte can be represented as an integer value, where each bit corresponds to a flag.
+
+#### Print Result:
+```python
+print(f"0x{flags:03X}")
+```
+This line formats the flags as a hexadecimal string. The `:03X` inside the f-string is a format specifier:
+- `X` means to format as uppercase hexadecimal.
+- `03` means to pad with zeros to ensure at least three characters.
+
+### **Why This Works**:
+This approach works because the Ethernet, IP, and TCP headers have standardized structures. By understanding these structures, you can precisely locate and extract specific fields, such as the TCP flags.
+
+The Python code then uses the knowledge of this structure to extract the relevant byte (TCP flags) from the hex dump. Given that the commonly used TCP flags are URG, ACK, PSH, RST, SYN, and FIN, which are all within a single byte (the 13th byte of the TCP header), we can obtain all the information we need from this byte.
+
+The extraction is done without needing to individually test each flag because the goal was to present the byte as a hex value (0xXXX format). If one needed the status of individual flags, they could use bitwise operations to test each flag, as demonstrated in the earlier solution.
 
 ## OSINT
 ### Beautiful House
 I dropped the image into Google Lens. Then searched by the keywords shown on the image "The Rectory". I went to each result one by one and visited their google maps street view. I eventually got to The Rectory Simons Town and the Tripadvisor had the name of the architect. I went to his Wikipedia page and found the name of his cousin whom he married.
 Flag - Florence Edmeades
+
+
 
